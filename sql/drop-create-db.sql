@@ -1,6 +1,6 @@
 
-DROP DATABASE IF EXISTS tariffs;
-DROP USER IF EXISTS openapi;
+DROP DATABASE tariffs;
+DROP USER openapi;
 
 -- User: openapi
 CREATE USER openapi WITH

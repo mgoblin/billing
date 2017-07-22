@@ -22,3 +22,8 @@
      become: true
      become_user: postgres
 
+   - name: create data
+     shell: psql < {{ sqlscripts_path }}/create-data.sql
+     become: true
+     become_user: postgres
+
