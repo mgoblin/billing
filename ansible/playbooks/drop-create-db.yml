@@ -1,0 +1,18 @@
+---
+
+# Развертывание структуры базы данных
+
+
+ - hosts: dbservers
+   vars:
+     sqlscripts_path: /home/mike/Projects/billing/sql
+
+   tasks:
+
+   - name: ensure pgsql running
+     service: name=postgresql state=started
+
+   - name: drop databse if exists
+     shell: psql < {{ sqlscripts_path }}/drop-create-db.sql
+     become: true
+     become_user: postgres
