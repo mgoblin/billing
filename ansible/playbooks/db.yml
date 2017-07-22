@@ -16,3 +16,9 @@
      shell: psql < {{ sqlscripts_path }}/drop-create-db.sql
      become: true
      become_user: postgres
+
+   - name: create tables
+     shell: psql < {{ sqlscripts_path }}/create-tables.sql
+     become: true
+     become_user: postgres
+
