@@ -72,3 +72,82 @@ WITH (
 ALTER TABLE tariffs_schema."FreemiumTariff"
     OWNER to openapi;
 
+-- Views
+CREATE OR REPLACE VIEW tariffs_schema."ActualFreeTariffs" AS
+    SELECT
+      "TariffHead"."Id",
+      "TariffHead"."Name",
+      "TariffHead"."Description",
+      "TariffHead"."StartTimestamp",
+      "TariffHead"."EndTimestamp",
+      "TariffHead"."Enabled"
+    FROM
+      tariffs_schema."TariffHead"
+    INNER JOIN tariffs_schema."FreeTariff" ON
+      tariffs_schema."TariffHead"."Id" = tariffs_schema."FreeTariff"."IdTariff"
+    WHERE
+      "Enabled" = true
+      AND
+      (
+        (now() BETWEEN "StartTimestamp" AND "EndTimestamp")
+        OR
+        (now() >= "StartTimestamp" AND "EndTimestamp" IS NULL)
+      );
+
+ALTER TABLE tariffs_schema."ActualFreeTariffs"
+  OWNER TO openapi;
+
+
+CREATE OR REPLACE VIEW tariffs_schema."ActualPayAsYouGoTariffs" AS
+    SELECT
+      "TariffHead"."Id",
+      "TariffHead"."Name",
+      "TariffHead"."Description",
+      "TariffHead"."StartTimestamp",
+      "TariffHead"."EndTimestamp",
+      "TariffHead"."Enabled",
+      "PayAsYouGoTariff"."Price"
+    FROM
+      tariffs_schema."TariffHead"
+    INNER JOIN tariffs_schema."PayAsYouGoTariff" ON
+      tariffs_schema."TariffHead"."Id" = tariffs_schema."PayAsYouGoTariff"."IdTariff"
+    WHERE
+      "Enabled" = true
+      AND
+      (
+        (now() BETWEEN "StartTimestamp" AND "EndTimestamp")
+        OR
+        (now() >= "StartTimestamp" AND "EndTimestamp" IS NULL)
+      );
+
+ALTER TABLE tariffs_schema."ActualPayAsYouGoTariffs"
+  OWNER TO openapi;
+
+
+CREATE OR REPLACE VIEW tariffs_schema."ActualFreemiumTariffs" AS
+    SELECT
+      "TariffHead"."Id",
+      "TariffHead"."Name",
+      "TariffHead"."Description",
+      "TariffHead"."StartTimestamp",
+      "TariffHead"."EndTimestamp",
+      "TariffHead"."Enabled",
+      "FreemiumTariff"."Price",
+      "FreemiumTariff"."BaseAmount"
+    FROM
+      tariffs_schema."TariffHead"
+    INNER JOIN tariffs_schema."FreemiumTariff" ON
+      tariffs_schema."TariffHead"."Id" = tariffs_schema."FreemiumTariff"."IdTariff"
+    WHERE
+      "Enabled" = true
+      AND
+      (
+        (now() BETWEEN "StartTimestamp" AND "EndTimestamp")
+        OR
+        (now() >= "StartTimestamp" AND "EndTimestamp" IS NULL)
+      );
+
+ALTER TABLE tariffs_schema."ActualFreemiumTariffs"
+  OWNER TO openapi;
+
+
